@@ -1,0 +1,44 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Título Padrão{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .menu {
+            background-color: black;
+            overflow: hidden;
+            text-align: center; /* Centraliza o menu */
+        }
+        .menu a {
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            display: inline-block; /* Permite que os links ocupem a largura disponível */
+            font-weight: bold; /* Deixa o texto em negrito */
+        }
+        .menu a:hover {
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <a href="/">Home</a>
+        <a href="/registrar_encomenda">Registrar Encomenda</a>
+        <a href="/dar_baixa">Dar Baixa em Encomenda</a>
+        <a href="/historico">Histórico de Encomendas</a>
+        <a href="/unidades">Unidades</a>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

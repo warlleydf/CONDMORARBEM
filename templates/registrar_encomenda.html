@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Registrar Encomenda{% endblock %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <h1>Registrar Encomenda</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.unidade_numero.label }}: {{ form.unidade_numero }}
+                {% if form.unidade_numero.errors %}
+                    {{ form.unidade_numero.errors }}
+                {% endif %}
+            </p>
+            <p>
+                {{ form.tipo.label }}: {{ form.tipo }}
+                {% if form.tipo.errors %}
+                    {{ form.tipo.errors }}
+                {% endif %}
+            </p>
+            <p>
+                {{ form.nome_porteiro_recebimento.label }} que Recebeu: {{ form.nome_porteiro_recebimento }} 
+                {% if form.nome_porteiro_recebimento.errors %}
+                    {{ form.nome_porteiro_recebimento.errors }}
+                {% endif %}
+            </p>
+            <p>
+                {{ form.data_recebimento.label }}: {{ form.data_recebimento }}
+                {% if form.data_recebimento.errors %}
+                    {{ form.data_recebimento.errors }}
+                {% endif %}
+            </p>
+            <button type="submit" style="background-color: green; color: white; padding: 10px 20px; border: none; cursor: pointer;">
+                Registrar
+            </button>
+        </form>
+    </div>
+{% endblock %}

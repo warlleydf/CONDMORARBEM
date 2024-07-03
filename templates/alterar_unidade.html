@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Alterar Unidade{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center;">Alterar Unidade</h1>
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <div style="margin: 0 auto; width: 17%;">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.unidade_numero.label }}<br>
+                {{ form.unidade_numero(size=10) }}
+            </div>
+            <br>
+            <div>
+                {{ form.nome_proprietario.label }}<br>
+                {{ form.nome_proprietario(size=40) }}
+            </div>
+            <br>
+            <div>
+                {{ form.telefone.label }}<br>
+                {{ form.telefone(size=20) }}
+            </div>
+            <br>
+            <div>
+                {{ form.email.label }}<br>
+                {{ form.email(size=40) }}
+            </div>
+            <br>
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

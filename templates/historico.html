@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Histórico de Encomendas{% endblock %}
+
+{% block content %}
+    <h1 style="text-align: center;">Histórico de Encomendas Baixadas</h1>
+    <div style="margin: 0 auto; width: 80%;">
+        <table style="margin: 0 auto; width: 100%; text-align: center; border-collapse: collapse;">
+            <thead style="background-color: #333; color: white;">
+                <tr>
+                    <th style="padding: 10px; border: 1px solid #ccc;">ID</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Unidade</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Tipo</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Porteiro que Recebeu</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Data Recebimento</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Morador que Retirou</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Porteiro que Entregou</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Data de Entrega</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for encomenda in encomendas %}
+                <tr style="background-color: #fff;">
+                    <td style="padding: 8px; border: 1px solid #ccc;">{{ encomenda.id }}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">{{ encomenda.unidade_numero }}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">{{ encomenda.tipo }}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">{{ encomenda.nome_porteiro_recebimento }}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">{{ encomenda.data_recebimento.strftime('%d/%m/%Y') }}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">{{ encomenda.nome_morador_retirada }}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">{{ encomenda.nome_porteiro_retirada }}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">{{ encomenda.data_retirada.strftime('%d/%m/%Y') if encomenda.data_retirada else '' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

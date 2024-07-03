@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align: center;">
+    <h2>Encomendas Pendentes</h2>
+    {% if encomendas_pendentes %}
+    <table style="margin: 0 auto; border-collapse: collapse; border: 1px solid #ccc;">
+        <thead>
+            <tr style="background-color: #343a40; color: white;">
+                <th style="border: 1px solid #ccc; padding: 8px;">ID</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Unidade</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Tipo</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Porteiro que Recebeu</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Data Recebimento</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for encomenda in encomendas_pendentes %}
+            <tr style="border: 1px solid #ccc;">
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ encomenda.id }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ encomenda.unidade_numero }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ encomenda.tipo }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ encomenda.nome_porteiro_recebimento }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ encomenda.data_recebimento.strftime('%d/%m/%Y') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Não há encomendas pendentes para dar baixa.</p>
+    {% endif %}
+
+    <hr style="margin: 20px auto;">
+
+    <h2>Dar Baixa em Encomenda</h2>
+    {% if baixa_realizada %}
+    <p style="color: green;">Baixa de Encomenda Realizada com Sucesso!</p>
+    {% endif %}
+    <form method="POST" style="margin: 0 auto; width: 100%;">
+        {{ form.csrf_token }}
+        <div style="margin-bottom: 10px;">
+            {{ form.encomenda_id.label }}<br>
+            {{ form.encomenda_id(class="form-control") }}
+        </div>
+        <div style="margin-bottom: 10px;">
+            {{ form.nome_morador_retirada.label }} que Retirou:<br>
+            {{ form.nome_morador_retirada(class="form-control", style="width: 17%;") }}
+        </div>
+        <div style="margin-bottom: 10px;">
+            {{ form.nome_porteiro_retirada.label }}<br>
+            {{ form.nome_porteiro_retirada(class="form-control") }}
+        </div>
+        <div style="margin-bottom: 10px;">
+            {{ form.data_retirada.label }}<br>
+            {{ form.data_retirada(class="form-control") }}
+        </div>
+        <button type="submit" style="background-color: green; color: white; padding: 10px 20px; border: none; cursor: pointer;">
+            Dar Baixa
+        </button>
+    </form>
+</div>
+{% endblock %}

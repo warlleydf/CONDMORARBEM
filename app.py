@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, DateField, SubmitField
 from wtforms.validators import DataRequired
 from forms import UnidadeForm
+#teste
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///condmorarbem.db'

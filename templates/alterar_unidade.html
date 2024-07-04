@@ -13,12 +13,12 @@
         <br>
         <div class="form-group">
             {{ form.telefone.label }}
-            {{ form.telefone(class="form-control", size=20) }}
+            {{ form.telefone(class="form-control", size=20, pattern="\d*", title="Por favor, insira apenas números") }}
         </div>
         <br>
         <div class="form-group">
             {{ form.email.label }}
-            {{ form.email(class="form-control", size=40) }}
+            {{ form.email(class="form-control", size=40, type="email", title="Por favor, insira um endereço de e-mail válido") }}
         </div>
         <br>
         <center>

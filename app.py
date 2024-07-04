@@ -5,6 +5,9 @@ from wtforms import StringField, SelectField, DateField, SubmitField
 from wtforms.validators import DataRequired
 from forms import UnidadeForm
 from flask import flash, redirect, render_template, url_for
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 #teste
 
 app = Flask(__name__)
@@ -62,6 +65,13 @@ def registrar_encomenda():
         db.session.add(encomenda)
         db.session.commit()
         return redirect(url_for('index'))
+    
+    # Exemplo de uso:
+    destinatario = 'wallysson.fernandes@gmail.com'
+    assunto = 'Registro de Encomenda'
+    corpo = 'Sua encomenda foi registrada com sucesso.'
+
+    #enviar_email(destinatario, assunto, corpo)
     return render_template("registrar_encomenda.html", form=form)
 
 @app.route('/dar_baixa', methods=['GET', 'POST'])
@@ -111,6 +121,32 @@ def alterar_unidade(id):
         db.session.commit()
         return redirect(url_for('unidades'))
     return render_template("alterar_unidade.html", form=form, unidade=unidade)
+
+def enviar_email(destinatario, assunto, corpo):
+    remetente = 'testemorarbem@gmail.com'  # Substitua pelo seu endereço de e-mail
+    senha = 'morarbem2024'  # Substitua pela senha de aplicativo gerada
+    
+    mensagem = MIMEMultipart()
+    mensagem['From'] = remetente
+    mensagem['To'] = destinatario
+    mensagem['Subject'] = assunto
+
+    mensagem.attach(MIMEText(corpo, 'plain'))
+
+    try:
+        servidor_smtp = smtplib.SMTP('smtp.gmail.com', 587)
+        servidor_smtp.starttls()  # Habilita a conexão TLS
+
+        # Faça login com a senha de aplicativo
+        servidor_smtp.login(remetente, senha)
+
+        # Envie o e-mail
+        servidor_smtp.sendmail(remetente, destinatario, mensagem.as_string())
+        print('E-mail enviado com sucesso!')
+    except Exception as e:
+        print(f'Erro ao enviar e-mail: {str(e)}')
+    finally:
+        servidor_smtp.quit()
 
 @app.before_request
 def before_request():

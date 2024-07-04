@@ -17,7 +17,8 @@
                     <th>Proprietário</th>
                     <th>Telefone</th>
                     <th>Email</th>
-                    <th>Alterar</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -32,9 +33,28 @@
                             <img src="{{ url_for('static', filename='editar.png') }}" alt="Editar">
                         </a>
                     </td>
+                    <td class="text-center">
+                        <form method="POST" action="{{ url_for('remover_unidade', id=unidade.id) }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn-remove-unit" style="background-color: transparent; border: none; padding: 0;">
+                                <img src="{{ url_for('static', filename='remover.png') }}" alt="Remover Unidade" style="max-width: 24px; max-height: 24px;">
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <script>
+        document.querySelectorAll('.btn-remove-unit').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                if (confirm('Tem certeza que deseja remover esta unidade?')) {
+                    this.closest('form').submit();
+                }
+            });
+        });
+    </script>
 {% endblock %}

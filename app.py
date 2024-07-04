@@ -1,3 +1,5 @@
+from cgitb import text
+from sqlite3 import IntegrityError
 from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -137,7 +139,7 @@ def cadastrar_unidade():
         flash('Unidade cadastrada com sucesso!', 'success')
         return redirect(url_for('unidades'))
     return render_template("cadastrar_unidade.html", form=form)
-
+            
 @app.route("/alterar_unidade/<int:id>", methods=["GET", "POST"])
 def alterar_unidade(id):
     unidade = Unidade.query.get_or_404(id)
@@ -171,6 +173,36 @@ def enviar_email(destinatario, assunto, corpo):
         print('E-mail enviado com sucesso!')
     except Exception as e:
         print(f'Erro ao enviar e-mail: {str(e)}')
+
+@app.route('/remover_unidade/<int:id>', methods=['POST', 'DELETE'])
+def remover_unidade(id):
+    unidade = Unidade.query.get_or_404(id)
+    
+    if tem_encomendas_vinculadas(unidade):
+        flash('Não é possível excluir esta unidade porque há encomendas vinculadas a ela.', 'danger')
+    else:
+        try:
+            db.session.delete(unidade)
+            db.session.commit()
+            flash('Unidade removida com sucesso!', 'success')
+        except IntegrityError:
+            db.session.rollback()
+            flash('Erro ao tentar remover a unidade.', 'danger')
+    
+    return redirect(url_for('unidades'))
+
+# Função para verificar se há encomendas vinculadas à unidade
+def tem_encomendas_vinculadas(unidade):
+    try:
+        # Consulta para verificar se há encomendas vinculadas à unidade
+        encomendas_vinculadas = Encomenda.query.filter_by(unidade_numero=unidade.numero).first()
+        
+        # Se há encomendas vinculadas, retorna True
+        return encomendas_vinculadas is not None
+    except Exception as e:
+        # Lida com qualquer erro de consulta ou de banco de dados
+        db.session.rollback()
+        raise e
 
 @app.before_request
 def before_request():

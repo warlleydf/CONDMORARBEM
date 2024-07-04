@@ -1,44 +1,30 @@
-<!-- base.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Título Padrão{% endblock %}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .menu {
-            background-color: black;
-            overflow: hidden;
-            text-align: center; /* Centraliza o menu */
-        }
-        .menu a {
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 17px;
-            display: inline-block; /* Permite que os links ocupem a largura disponível */
-            font-weight: bold; /* Deixa o texto em negrito */
-        }
-        .menu a:hover {
-            background-color: gray;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Adicione aqui outros links para folhas de estilo, se necessário -->
+    {% block styles %}{% endblock %}
 </head>
 <body>
     <div class="menu">
         <a href="/">Home</a>
-        <a href="/registrar_encomenda">Registrar Encomenda</a>
-        <a href="/dar_baixa">Dar Baixa em Encomenda</a>
-        <a href="/historico">Histórico de Encomendas</a>
-        <a href="/unidades">Unidades</a>
+        <a href="{{ url_for('registrar_encomenda') }}">Registrar Encomenda</a>
+        <a href="{{ url_for('dar_baixa') }}">Dar Baixa em Encomenda</a>
+        <a href="{{ url_for('historico') }}">Histórico de Encomendas</a>
+        <a href="{{ url_for('unidades') }}">Unidades</a>
     </div>
 
-    {% block content %}
-    {% endblock %}
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Scripts JavaScript no final para melhorar o carregamento -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-RalY8lA+LNRXYjCskA5MAY1vP0AL0Wxy1pTzX+owWz05lzOyUL0k9fqlAkVJ6wua" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh/jFcScUo4pYW0Fsqa2Q8pNvbdEzpOYj5qjU" crossorigin="anonymous"></script>
+    {% block scripts %}{% endblock %}
 </body>
 </html>

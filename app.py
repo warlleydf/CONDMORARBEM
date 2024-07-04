@@ -45,7 +45,7 @@ class RegistrarEncomendaForm(FlaskForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.unidade_numero.choices = [(unidade.id, f'{unidade.numero}') for unidade in Unidade.query.all()]
+        self.unidade_numero.choices = [(str(unidade.numero), f'{unidade.numero}') for unidade in Unidade.query.all()]
 
 class DarBaixaEncomendaForm(FlaskForm):
     encomenda_id = SelectField('ID da Encomenda', coerce=int, validators=[DataRequired()])
@@ -73,17 +73,18 @@ def registrar_encomenda():
         
         # Obter o e-mail do proprietário da unidade
         unidade = Unidade.query.filter_by(numero=form.unidade_numero.data).first()
+  
         destinatario = unidade.email
         assunto = 'Condomínio Morar Bem - Nova correspondência'
         corpo = (
-    f"Prezado condômino da Unidade ({form.unidade_numero.data}),\n"
-    "Uma nova correspondência aguarda sua retirada na portaria.\n"
-    f"- Data de recebimento: {form.data_recebimento.data}\n"
-    f"- Tipo: {form.tipo.data}\n"
-    f"- Porteiro que recebeu: {form.nome_porteiro_recebimento.data}\n"
-    "Atenciosamente,\n"
-    "Administração do Condomínio Morar Bem."
-) #teste#
+                f"Prezado condômino da Unidade ({form.unidade_numero.data}),\n"
+                "Uma nova correspondência aguarda sua retirada na portaria.\n"
+                f"- Data de recebimento: {form.data_recebimento.data}\n"
+                f"- Tipo: {form.tipo.data}\n"
+                f"- Porteiro que recebeu: {form.nome_porteiro_recebimento.data}\n"
+                "Atenciosamente,\n"
+                "Administração do Condomínio Morar Bem."
+        ) #teste#
         enviar_email(destinatario, assunto, corpo)
         flash('Encomenda registrada e e-mail enviado com sucesso!', 'success')
         

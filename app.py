@@ -68,9 +68,16 @@ def registrar_encomenda():
         # Obter o e-mail do proprietário da unidade
         unidade = Unidade.query.filter_by(numero=form.unidade_numero.data).first()
         destinatario = unidade.email
-        assunto = 'Você acabou de Receber uma Encomenda.'
-        corpo = f'Ola, você acabou de receber um(a) {form.tipo.data}. Favor Retirar na Portaria. {form.data_recebimento.data}.'
-        
+        assunto = 'Condomínio Morar Bem - Nova correspondência'
+        corpo = (
+    f"Prezado condômino da Unidade ({form.unidade_numero.data}),\n"
+    "Uma nova correspondência aguarda sua retirada na portaria.\n"
+    f"- Data de recebimento: {form.data_recebimento.data}\n"
+    f"- Tipo: {form.tipo.data}\n"
+    f"- Porteiro que recebeu: {form.nome_porteiro_recebimento.data}\n"
+    "Atenciosamente,\n"
+    "Administração do Condomínio Morar Bem."
+) #teste#
         enviar_email(destinatario, assunto, corpo)
         flash('Encomenda registrada e e-mail enviado com sucesso!', 'success')
         

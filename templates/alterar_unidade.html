@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container">
     <h2 class="text-center">Alterar Unidade {{ unidade.numero }}</h2>
-    <form method="POST" class="form">
+    <form id="alterarUnidadeForm" method="POST" class="form">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.nome_proprietario.label }}
@@ -28,4 +28,10 @@
         </center>
     </form>
 </div>
+
+<script>
+    document.getElementById('alterarUnidadeForm').addEventListener('submit', function() {
+        showLoading();
+    });
+</script>
 {% endblock %}

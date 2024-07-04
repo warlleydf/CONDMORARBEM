@@ -37,7 +37,7 @@
         {% if baixa_realizada %}
         <p class="success-message">Baixa de Encomenda Realizada com Sucesso!</p>
         {% endif %}
-        <form method="POST" class="form">
+        <form id="darBaixaForm" method="POST" class="form">
             {{ form.csrf_token }}
             <div class="form-group">
                 {{ form.encomenda_id.label }}
@@ -66,4 +66,10 @@
             </center>
         </form>
     </div>
+
+    <script>
+        document.getElementById('darBaixaForm').addEventListener('submit', function() {
+            showLoading();
+        });
+    </script>
 {% endblock %}

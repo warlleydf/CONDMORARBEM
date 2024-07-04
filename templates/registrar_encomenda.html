@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container">
     <h2 class="text-center">Registrar Encomenda</h2>
-    <form method="POST" class="form">
+    <form id="registrarEncomendaForm" method="POST" class="form">
         {{ form.hidden_tag() }}
         <div class="form-group row">
             <label for="unidade_numero" class="col-sm-2 col-form-label">Unidade:</label>
@@ -55,4 +55,10 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('registrarEncomendaForm').addEventListener('submit', function() {
+        showLoading();
+    });
+</script>
 {% endblock %}

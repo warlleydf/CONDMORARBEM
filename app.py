@@ -107,6 +107,7 @@ def dar_baixa():
             db.session.commit()
         
         # Redirecionar para a página inicial após a baixa da encomenda
+        flash('Baixa de encomenda registrada com sucesso!', 'success')
         return redirect(url_for('index'))
     
     return render_template('dar_baixa.html', form=form, encomendas_pendentes=encomendas_pendentes)
@@ -130,6 +131,7 @@ def alterar_unidade(id):
         unidade.telefone = form.telefone.data
         unidade.email = form.email.data
         db.session.commit()
+        flash('Atualização da unidade com sucesso!', 'success')
         return redirect(url_for('unidades'))
     return render_template("alterar_unidade.html", form=form, unidade=unidade)
 

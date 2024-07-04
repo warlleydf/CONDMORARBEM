@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Título Padrão{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <!-- Adicione aqui outros links para folhas de estilo, se necessário -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     {% block styles %}{% endblock %}
 </head>
 <body>
@@ -16,15 +15,45 @@
         <a href="{{ url_for('unidades') }}">Unidades</a>
     </div>
 
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Mensagens Flash -->
+    {% block flash_messages %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div id="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const flashMessages = document.getElementById('flash-messages');
+                        if (flashMessages) {
+                            setTimeout(() => {
+                                flashMessages.style.display = 'none';
+                            }, 2000);
+                        }
+                    });
+                </script>
+            {% endif %}
+        {% endwith %}
+    {% endblock %}
+
     <div class="content">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </div>
 
     <!-- Scripts JavaScript no final para melhorar o carregamento -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-RalY8lA+LNRXYjCskA5MAY1vP0AL0Wxy1pTzX+owWz05lzOyUL0k9fqlAkVJ6wua" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh/jFcScUo4pYW0Fsqa2Q8pNvbdEzpOYj5qjU" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/popover.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/loading.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -162,3 +162,30 @@ form button:hover {
     100% { transform: rotate(360deg); }
 }
 
+.float-right {
+    float: right;
+}
+
+.btn-submit,
+.btn-cadastrar {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #007bff;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s,background-color .15s,border-color .15s,box-shadow .15s;
+}
+
+.btn-submit:hover,
+.btn-cadastrar:hover {
+    color: #fff;
+    background-color: #0056b3;
+    border-color: #0056b3;
+}

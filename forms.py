@@ -24,7 +24,7 @@ class BaixaForm(FlaskForm):
     submit = SubmitField('Dar Baixa')
 
 class UnidadeForm(FlaskForm):
-    numero = StringField('Unidade', render_kw={'readonly': True})
+    numero = StringField('Unidade', validators=[DataRequired()])
     nome_proprietario = StringField('Nome do Proprietário', validators=[DataRequired()])
     telefone = StringField('Telefone', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), email_check])

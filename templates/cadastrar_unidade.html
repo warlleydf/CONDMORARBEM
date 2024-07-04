@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Cadastrar Unidade{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Cadastrar Nova Unidade</h2>
+    <form id="cadastrarUnidadeForm" method="POST" class="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.numero.label }}
+            {{ form.numero(class="form-control", pattern="[0-9]*", maxlength=4, title="Por favor, insira apenas números (máximo de 4 dígitos)") }}
+        </div>
+        <br>        
+        <div class="form-group">
+            {{ form.nome_proprietario.label }}
+            {{ form.nome_proprietario(class="form-control", size=40) }}
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.telefone.label }}
+            {{ form.telefone(class="form-control", size=20, pattern="\d*", title="Por favor, insira apenas números") }}
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control", size=40, type="email", title="Por favor, insira um endereço de e-mail válido") }}
+        </div>
+        <br>
+        <center>
+            <button type="submit" class="btn-submit">
+                Cadastrar Unidade
+            </button>
+        </center>
+    </form>
+</div>
+
+<script>
+    document.getElementById('cadastrarUnidadeForm').addEventListener('submit', function() {
+        showLoading();
+    });
+</script>
+{% endblock %}

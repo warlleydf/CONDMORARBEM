@@ -4,6 +4,9 @@
 
 {% block content %}
     <div class="container">
+        <button type="button" class="btn-cadastrar float-right" onclick="location.href='{{ url_for('cadastrar_unidade') }}';">
+            Cadastrar Unidade
+        </button>
         <h1 class="text-center">Proprietários das Unidades</h1>
 
         <!-- Tabela de unidades -->

@@ -132,17 +132,32 @@ def unidades():
 def cadastrar_unidade():
     form = UnidadeForm()
     if form.validate_on_submit():
-        nova_unidade = Unidade(
-            numero=form.numero.data,
-            nome_proprietario=form.nome_proprietario.data,
-            telefone=form.telefone.data,
-            email=form.email.data
-        )
-        db.session.add(nova_unidade)
-        db.session.commit()
-        flash('Unidade cadastrada com sucesso!', 'success')
-        return redirect(url_for('unidades'))
+        
+        unidade_existente_numero = Unidade.query.filter_by(numero=form.numero.data).first()
+        unidade_existente_email = Unidade.query.filter_by(email=form.email.data).first()
+        unidade_existente_proprietario = Unidade.query.filter_by(nome_proprietario=form.nome_proprietario.data).first()
+        
+        if unidade_existente_numero:
+            flash('Unidade com este número já cadastrada!', 'danger')
+        elif unidade_existente_email:
+            flash('Já existe uma unidade cadastrada com este email!', 'danger')
+        elif unidade_existente_proprietario:
+            flash('Já existe uma unidade cadastrada com este proprietario!', 'danger')
+        else:
+            # Criar e adicionar a nova unidade apenas se não houver conflito
+            nova_unidade = Unidade(
+                numero=form.numero.data,
+                nome_proprietario=form.nome_proprietario.data,
+                telefone=form.telefone.data,
+                email=form.email.data
+            )
+            db.session.add(nova_unidade)
+            db.session.commit()
+            flash('Unidade cadastrada com sucesso!', 'success')
+            return redirect(url_for('unidades'))
+    
     return render_template("cadastrar_unidade.html", form=form)
+
             
 @app.route("/alterar_unidade/<int:id>", methods=["GET", "POST"])
 def alterar_unidade(id):

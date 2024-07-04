@@ -125,36 +125,49 @@ def historico():
 
 @app.route("/unidades")
 def unidades():
-    unidades = Unidade.query.all()
+    unidades = Unidade.query.order_by(Unidade.numero).all()
     return render_template("unidades.html", unidades=unidades)
 
 @app.route("/cadastrar_unidade", methods=["GET", "POST"])
 def cadastrar_unidade():
     form = UnidadeForm()
+    
+    def validar_numero_unidade(numero):
+        try:
+            andar = int(numero[:-2])
+            unidade = int(numero[-2:])
+            if andar < 1 or andar > 5 or unidade not in (1, 2):
+                return False
+            return True
+        except ValueError:
+            return False
+    
     if form.validate_on_submit():
-        
-        unidade_existente_numero = Unidade.query.filter_by(numero=form.numero.data).first()
-        unidade_existente_email = Unidade.query.filter_by(email=form.email.data).first()
-        unidade_existente_proprietario = Unidade.query.filter_by(nome_proprietario=form.nome_proprietario.data).first()
-        
-        if unidade_existente_numero:
-            flash('Unidade com este número já cadastrada!', 'danger')
-        elif unidade_existente_email:
-            flash('Já existe uma unidade cadastrada com este email!', 'danger')
-        elif unidade_existente_proprietario:
-            flash('Já existe uma unidade cadastrada com este proprietario!', 'danger')
+        if not validar_numero_unidade(form.numero.data):
+            flash('Número de unidade inválido! Use o formato correto (por exemplo, 101, 102, 201, 202 até 502).', 'danger')
         else:
-            # Criar e adicionar a nova unidade apenas se não houver conflito
-            nova_unidade = Unidade(
-                numero=form.numero.data,
-                nome_proprietario=form.nome_proprietario.data,
-                telefone=form.telefone.data,
-                email=form.email.data
-            )
-            db.session.add(nova_unidade)
-            db.session.commit()
-            flash('Unidade cadastrada com sucesso!', 'success')
-            return redirect(url_for('unidades'))
+            unidade_existente_numero = Unidade.query.filter_by(numero=form.numero.data).first()
+            unidade_existente_email = Unidade.query.filter_by(email=form.email.data).first()
+            unidade_existente_proprietario = Unidade.query.filter_by(nome_proprietario=form.nome_proprietario.data).first()
+            
+            if unidade_existente_numero:
+                flash('Unidade com este número já cadastrada!', 'danger')
+            elif unidade_existente_email:
+                flash('Já existe uma unidade cadastrada com este email!', 'danger')
+            elif unidade_existente_proprietario:
+                flash('Já existe uma unidade cadastrada com este proprietário!', 'danger')
+            else:
+                # Criar e adicionar a nova unidade apenas se não houver conflito
+                nova_unidade = Unidade(
+                    numero=form.numero.data,
+                    nome_proprietario=form.nome_proprietario.data,
+                    telefone=form.telefone.data,
+                    email=form.email.data
+                )
+                db.session.add(nova_unidade)
+                db.session.commit()
+                flash('Unidade cadastrada com sucesso!', 'success')
+                return redirect(url_for('unidades'))
     
     return render_template("cadastrar_unidade.html", form=form)
 
@@ -193,7 +206,7 @@ def enviar_email(destinatario, assunto, corpo):
     except Exception as e:
         print(f'Erro ao enviar e-mail: {str(e)}')
 
-@app.route('/remover_unidade/<int:id>', methods=['POST', 'DELETE'])
+@app.route('/remover_unidade/<int:id>', methods=['GET', 'POST'])
 def remover_unidade(id):
     unidade = Unidade.query.get_or_404(id)
     

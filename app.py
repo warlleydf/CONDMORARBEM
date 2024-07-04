@@ -38,10 +38,14 @@ class Encomenda(db.Model):
     retirada = db.Column(db.Boolean, default=False)  # Adicione esta linha se 'retirada' for um campo booleano
 
 class RegistrarEncomendaForm(FlaskForm):
-    unidade_numero = SelectField('Unidade', choices=[('101', '101'), ('102', '102'), ('201', '201'), ('301', '301'), ('302', '302'), ('401', '401'), ('402', '402'), ('501', '501'), ('502', '502')], validators=[DataRequired()])
+    unidade_numero = SelectField('Unidade', coerce=int, validators=[DataRequired()])
     tipo = SelectField('Tipo de Encomenda', choices=[('carta', 'Carta'), ('envelope', 'Envelope'), ('pacote', 'Pacote'), ('caixa', 'Caixa')], validators=[DataRequired()])
     nome_porteiro_recebimento = StringField('Nome do Porteiro', validators=[DataRequired()])
     data_recebimento = DateField('Data de Recebimento', format='%Y-%m-%d', validators=[DataRequired()])
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.unidade_numero.choices = [(unidade.id, f'{unidade.numero}') for unidade in Unidade.query.all()]
 
 class DarBaixaEncomendaForm(FlaskForm):
     encomenda_id = SelectField('ID da Encomenda', coerce=int, validators=[DataRequired()])

@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SelectField, DateTimeField, SubmitField, ValidationError
-from wtforms.validators import DataRequired, Email
+from wtforms import StringField, IntegerField, SelectField, DateField, DateTimeField, SubmitField, ValidationError
+from wtforms.validators import DataRequired
 import re
+
+from models import Unidade
 
 def email_check(form, field):
     email = field.data
@@ -29,3 +31,20 @@ class UnidadeForm(FlaskForm):
     telefone = StringField('Telefone', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), email_check])
     submit = SubmitField('Atualizar')
+    
+class RegistrarEncomendaForm(FlaskForm):
+    unidade_numero = SelectField('Unidade', coerce=int, validators=[DataRequired()])
+    tipo = SelectField('Tipo de Encomenda', choices=[('carta', 'Carta'), ('envelope', 'Envelope'), ('pacote', 'Pacote'), ('caixa', 'Caixa')], validators=[DataRequired()])
+    nome_porteiro_recebimento = StringField('Nome do Porteiro', validators=[DataRequired()])
+    data_recebimento = DateField('Data de Recebimento', format='%Y-%m-%d', validators=[DataRequired()])
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.unidade_numero.choices = [(str(unidade.numero), f'{unidade.numero}') for unidade in Unidade.query.all()]
+
+class DarBaixaEncomendaForm(FlaskForm):
+    encomenda_id = SelectField('ID da Encomenda', coerce=int, validators=[DataRequired()])
+    nome_morador_retirada = StringField('Nome do Morador', validators=[DataRequired()])
+    nome_porteiro_retirada = StringField('Nome do Porteiro', validators=[DataRequired()])
+    data_retirada = DateField('Data de Retirada', format='%Y-%m-%d', validators=[DataRequired()])
+    submit = SubmitField('Dar Baixa')

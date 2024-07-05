@@ -1,6 +1,6 @@
-from app import db
-from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy()
 class Encomenda(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     unidade_numero = db.Column(db.String(10), db.ForeignKey('unidade.numero'), nullable=False)

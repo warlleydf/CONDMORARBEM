@@ -12,7 +12,6 @@ app.config['SECRET_KEY'] = 'mysecretkey'
 
 db.init_app(app)
 
-# Rotas e lógica de negócio
 
 @app.route("/")
 def index():

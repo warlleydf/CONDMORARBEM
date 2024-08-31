@@ -1,7 +1,7 @@
-from app import app, db  # Certifique-se de importar 'app' e 'db'
+from app import app, db 
 from app import Unidade
 
-# Dados fictícios para as unidades
+# Dados fictícios
 unidades = [
     {'numero': '101', 'nome_proprietario': 'João Silva', 'telefone': '123456789', 'email': 'joao@example.com'},
     {'numero': '102', 'nome_proprietario': 'Maria Souza', 'telefone': '987654321', 'email': 'maria@example.com'},
@@ -14,7 +14,7 @@ unidades = [
     {'numero': '502', 'nome_proprietario': 'Lucas Alves', 'telefone': '321654987', 'email': 'lucas@example.com'}
 ]
 
-# Inicializar o banco de dados e adicionar os dados fictícios
+
 with app.app_context():
     db.create_all()
     for unidade in unidades:
